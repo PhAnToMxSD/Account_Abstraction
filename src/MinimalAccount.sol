@@ -20,15 +20,20 @@ contract MinimalAccount is IAccount, Ownable {
     }
 
     modifier onlyEntryPoint() {
-        require(msg.sender == address(i_entryPoint), "Only EntryPoint can call");
+        require(
+            msg.sender == address(i_entryPoint),
+            "Only EntryPoint can call"
+        );
         _;
     }
 
     modifier onlyOwnerOrEntryPoint() {
-        require(msg.sender == owner() || msg.sender == address(i_entryPoint), "Only owner or EntryPoint can call");
+        require(
+            msg.sender == owner() || msg.sender == address(i_entryPoint),
+            "Only owner or EntryPoint can call"
+        );
         _;
     }
-
 
     function validateUserOp(
         PackedUserOperation calldata userOp,
@@ -39,7 +44,11 @@ contract MinimalAccount is IAccount, Ownable {
         _validateSignature(userOp, userOpHash);
     }
 
-    function execute (address target, uint256 value, bytes calldata data) external onlyOwnerOrEntryPoint {
+    function execute(
+        address target,
+        uint256 value,
+        bytes calldata data
+    ) external onlyOwnerOrEntryPoint {
         (bool success, bytes memory result) = target.call{value: value}(data);
         require(success, string(result));
     }
@@ -60,8 +69,10 @@ contract MinimalAccount is IAccount, Ownable {
         return SIG_VALIDATION_SUCCESS; // Returns 0
     }
 
-    function _payPrefund(uint256 mAf) internal{
-        (bool success, ) = msg.sender.call{value: mAf, gas: type(uint256).max}("");
+    function _payPrefund(uint256 mAf) internal {
+        (bool success, ) = msg.sender.call{value: mAf, gas: type(uint256).max}(
+            ""
+        );
         require(success, "Failed to send prefund");
     }
 }

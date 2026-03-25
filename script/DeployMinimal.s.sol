@@ -6,9 +6,9 @@ import {MinimalAccount} from "src/MinimalAccount.sol";
 import {CONFIG} from "./HelperConfig.s.sol";
 
 contract DeployMinimal is Script {
-    function run() external {
-    }
-    function deployMinimalAccount() external returns (CONFIG, MinimalAccount){
+    function run() external {}
+
+    function deployMinimalAccount() external returns (CONFIG, MinimalAccount) {
         CONFIG fig = new CONFIG();
         CONFIG.Config memory config = fig.getConfigByChainID();
 

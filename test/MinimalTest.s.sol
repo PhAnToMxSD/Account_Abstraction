@@ -11,7 +11,8 @@ contract MinimalTest is Test {
     CONFIG fig;
     MinimalAccount min;
     ERC20Mock token;
-    function setUp () public {
+
+    function setUp() public {
         DeployMinimal dep = new DeployMinimal();
         (fig, min) = dep.deployMinimalAccount();
         token = new ERC20Mock();
@@ -28,7 +29,11 @@ contract MinimalTest is Test {
     function testOwnerCanExecuteCommands() public {
         assertEq(token.balanceOf(address(this)), 0);
         token.mint(address(min), 100);
-        bytes memory data = abi.encodeWithSignature("transfer(address,uint256)", address(this), 50);
+        bytes memory data = abi.encodeWithSignature(
+            "transfer(address,uint256)",
+            address(this),
+            50
+        );
         min.execute(address(token), 0, data);
         assertEq(token.balanceOf(address(this)), 50);
     }
